@@ -27,6 +27,18 @@ mongoose.connect(connection_url);
 
 //????
 
+const db = mongoose.connection;
+db.once("open", () => {
+  console.log("connected to mongoDB");
+
+  const msgCollection = db.collection("messagecontents");
+  const changeStream = msgCollection.watch();
+
+  changeStream.on("change", (change) => {
+    console.log(change);
+  });
+});
+
 //api routes
 app.get("/", (req, res) =>
   res.status(200).send("lets goo!༼ つ ◕_◕ ༽つ(╯°□°）╯︵ ┻━┻")
