@@ -22,34 +22,36 @@ app.use(express.json());
 app.use(cors());
 
 //DB config
-const connection_url =
-  "mongodb+srv://ahmad599:17November2001.com@cluster0.2zppg.mongodb.net/?retryWrites=true&w=majority";
+// const connection_url =
+//   "mongodb+srv://ahmad599:17November2001.com@cluster0.2zppg.mongodb.net/?retryWrites=true&w=majority";
 
-mongoose.connect(connection_url);
+// mongoose.connect(connection_url);
 
 //????
 
-const db = mongoose.connection;
-db.once("open", () => {
-  console.log("connected to mongoDB");
+// const db = mongoose.connection;
+// db.once("open", () => {
+//   console.log("connected to mongoDB");
 
-  const msgCollection = db.collection("messagecontents");
-  const changeStream = msgCollection.watch();
+//   const msgCollection = db.collection("messagecontents");
+//   const changeStream = msgCollection.watch();
 
-  changeStream.on("change", (change) => {
-    console.log("A change occured" + change);
+//   changeStream.on("change", (change) => {
+//     console.log("A change occured" + change);
 
-    if (change.operationType === "insert") {
-      const messageDetails = change.fullDocument;
-      pusher.trigger("messages", "inserted", {
-        name: messageDetails.name,
-        message: messageDetails.message,
-      });
-    } else {
-      console.log("Error triggering pusher");
-    }
-  });
-});
+//     if (change.operationType === "insert") {
+//       const messageDetails = change.fullDocument;
+//       pusher.trigger("messages", "inserted", {
+//         name: messageDetails.name,
+//         message: messageDetails.message,
+//         timestamp: messageDetails.timestamp,
+//         received: messageDetails.received,
+//       });
+//     } else {
+//       console.log("Error triggering pusher");
+//     }
+//   });
+// });
 
 //api routes
 app.get("/", (req, res) =>
